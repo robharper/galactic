@@ -1,0 +1,17 @@
+{
+  "name": "galactic",
+  "version": "0.0.1",
+  "dependencies": {},
+  "devDependencies": {
+    "coffee-script": "~1.6.3",
+    "grunt": "~0.4.0",
+    "grunt-contrib-copy": "~0.4.0",
+    "grunt-contrib-coffee": "~0.4.0",
+    "grunt-contrib-clean": "0.4.0",
+    "grunt-es6-module-transpiler": "~0.3.0",
+    "matchdep": "~0.1.1"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}
