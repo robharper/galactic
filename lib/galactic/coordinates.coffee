@@ -1,4 +1,4 @@
-import 'dates' as Dates
+import './dates' as Dates
 
 # Utilities
 atan = Math.atan2
@@ -36,7 +36,7 @@ Coord =
 
   #
   # Ecliptic to Equatorial
-  # In: longitude, latidue
+  # In: longitude, latitude
   # Out: declication, right ascension, (obliquity used in calculation is also given)
   #
   eclipticToEquatorial: (coord) ->
