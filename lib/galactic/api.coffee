@@ -1,19 +1,11 @@
 import './dates' as Dates
 import './coordinates' as Coord
 
-System =
-  'ecliptic': 'ecliptic'
-  'equatorial': 'equatorial'
-  'horizontal': 'horizontal'
-
 
 #
 #
 #
 class Galactic
-  @property: (prop, desc) ->
-    Object.defineProperty @prototype, prop, desc
-
   constructor: (coordinate, observer) ->
     @_coord = coordinate
     @_observer = observer
@@ -32,17 +24,13 @@ class GalacticEcliptic extends Galactic
     super(coordinate, observer)
     throw "Ecliptic coordinates must have both latidue and longitude specified" unless @_coord.latitude? and @_coord.longitude?
 
-  @property 'latitude',
-    get: ->
-      @_coord.latitude
+  system: -> 'ecliptic'
 
-  @property 'longitude',
-    get: ->
-      @_coord.longitude
+  latitude: -> @_coord.latitude
 
-  observer: (observer) ->
-    # Identity transform - ecliptic doesn't depend on observer
-    new @constructor(@_coord, observer)
+  longitude: -> @_coord.longitude
+
+  # observer: Identity transform - ecliptic doesn't depend on observer
 
   # Conversions
   #
@@ -68,31 +56,29 @@ class GalacticEquatorial extends Galactic
     super(coordinate, observer)
     throw "Equatoric coordinates must have declination and one of right ascension or hour angle specified" unless @_coord.declination? and (@_coord.rightAscension? or @_coord.hourAngle?)
 
-  @property 'declination',
-    get: ->
-      @_coord.declination
+  system: -> 'equatorial'
 
-  @property 'rightAscension',
-    get: ->
-      if @_coord.rightAscension?
-        @_coord.rightAscension 
-      else
-        # TODO validation error if no/incomplete observer
-        localSidereal = @_observer.localSidereal ? Coord.utcToLocalSidereal(@_observer)
-        Coord.hourAngleToRightAscension(@_coord.hourAngle, localSidereal)
+  declination: -> @_coord.declination
 
-  @property 'hourAngle',
-    get: ->
-      if @_coord.rightAscension?
-        @_coord.rightAscension 
-      else
-        # TODO validation error if no/incomplete observer
-        localSidereal = @_observer.localSidereal ? Coord.utcToLocalSidereal(@_observer)
-        Coord.rightAscensionToHourAngle(@_coord.rightAscension, localSidereal)
+  rightAscension: ->
+    if @_coord.rightAscension?
+      @_coord.rightAscension 
+    else
+      # TODO validation error if no/incomplete observer
+      localSidereal = @_observer.localSidereal ? Coord.utcToLocalSidereal(@_observer)
+      Coord.hourAngleToRightAscension(@_coord.hourAngle, localSidereal)
+
+  hourAngle: ->
+    if @_coord.hourAngle?
+      @_coord.hourAngle 
+    else
+      # TODO validation error if no/incomplete observer
+      localSidereal = @_observer.localSidereal ? Coord.utcToLocalSidereal(@_observer)
+      Coord.rightAscensionToHourAngle(@_coord.rightAscension, localSidereal)
 
   # Creates a copy of this coordinate with a different observer
   observer: (observer) ->
-    if @_coord.hourAngle
+    if @_coord.hourAngle?
       # Must convert hourAngle to new system (convert to observer-independent rightAscension)
       localSidereal = @_observer.localSidereal ? Coord.utcToLocalSidereal(@_observer)
       rightAscension = Coord.hourAngleToRightAscension(@_coord.hourAngle, localSidereal)
@@ -125,13 +111,11 @@ class GalacticHorizontal extends Galactic
     super(coordinate, observer)
     throw "Equatoric coordinates must have declination and one of right ascension or hour angle specified" unless @_coord.altitude? and @_coord.azimuth?
 
-  @property 'altitude',
-    get: ->
-      @_coord.altitude
+  system: -> 'horizontal'
 
-  @property 'azimuth',
-    get: ->
-      @_coord.azimuth
+  altitude: -> @_coord.altitude
+
+  azimuth: -> @_coord.azimuth
 
   # Creates a copy of this coordinate with a different observer
   observer: (observer) ->
@@ -159,7 +143,7 @@ galactic = (coordinate, observer) ->
     new GalacticEcliptic(coordinate, observer)
   else if coordinate.declination?
     new GalacticEquatorial(coordinate, observer)
-  else if coordinate.altitude? and coordinate.azimuth
+  else if coordinate.altitude? and coordinate.azimuth?
     new GalacticHorizontal(coordinate, observer)
 
 export = galactic
