@@ -35,14 +35,14 @@ class GalacticEcliptic extends Galactic
   # Conversions
   #
   # Return new Galactic objects in new coordinate system
-  ecliptic: () ->
-    new @constructor(@_coord, @_observer)
+  ecliptic: (observer) ->
+    new @constructor(@_coord, observer ? @_observer)
 
   equatorial: (observer) ->
-    new GalacticEquatorial(Coord.eclipticToEquatorial(@_coord, @_observer), @_observer)
+    new GalacticEquatorial(Coord.eclipticToEquatorial(@_coord, observer ? @_observer), observer ? @_observer)
 
   horizontal: (observer) ->
-    @equatorial().horizontal()
+    @equatorial().horizontal(observer)
 
 
 
@@ -90,14 +90,14 @@ class GalacticEquatorial extends Galactic
   # Conversions
   #
   # Return new Galactic objects in new coordinate system
-  ecliptic: () ->
-    new GalacticEcliptic(Coord.equatorialToEcliptic(@_coord, @_observer), @_observer)
+  ecliptic: (observer) ->
+    new GalacticEcliptic(Coord.equatorialToEcliptic(@_coord, observer ? @_observer), observer ? @_observer)
 
-  equatorial: () ->
-    new @constructor(@_coord, @_observer)
+  equatorial: (observer) ->
+    new @constructor(@_coord, observer ? @_observer)
  
   horizontal: (observer) ->
-    new GalacticHorizontal(Coord.equatorialToHorizontal(@_coord, @_observer), @_observer)
+    new GalacticHorizontal(Coord.equatorialToHorizontal(@_coord, observer ? @_observer), observer ? @_observer)
   
 
 
@@ -125,14 +125,14 @@ class GalacticHorizontal extends Galactic
   # Conversions
   #
   # Return new Galactic objects in new coordinate system
-  ecliptic: () ->
-    @equatorial().ecliptic()
+  ecliptic: (observer) ->
+    @equatorial(observer).ecliptic()
 
-  equatorial: () ->
-    new GalacticEquatorial(Coord.horizontalToEquatorial(@_coord, @_observer), @_observer)
+  equatorial: (observer) ->
+    new GalacticEquatorial(Coord.horizontalToEquatorial(@_coord, observer ? @_observer), observer ? @_observer)
 
-  horizontal: () ->
-    new @constructor(@_coord, @_observer)
+  horizontal: (observer) ->
+    new @constructor(@_coord, observer ? @_observer)
  
 
 
