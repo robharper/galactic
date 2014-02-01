@@ -10,16 +10,16 @@ var rad = function(deg) { return deg/180 * Math.PI; };
 var deg = function(rad) { return rad*180 / Math.PI; };
 ```
 
-Where is alpha centuri in the sky above Toronto right now?
+Where is alpha centauri in the sky above Toronto right now?
 ```javascript
 // Create coordinate in equatorial coordinate system
-var centuri = galactic({latitude: rad(-42.587), longitude: rad(239.488)});
+var centauri = galactic({latitude: rad(-42.587), longitude: rad(239.488)});
 
 // Observer (Toronto, now)
 var observer = {latitude: rad(43.7001100), longitude: rad(-79.4163000), utc: Date.now()};
 
 // Convert to horizontal given observer place/time
-var horizontal = centuri.horizontal( observer );
+var horizontal = centauri.horizontal( observer );
 
 // Where is it?
 console.log('Altitude: ' + deg(horizontal.altitude()) + ', Azimuth: ' + deg(horizontal.azimuth()));
