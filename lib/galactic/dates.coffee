@@ -10,7 +10,7 @@ Dates =
 
   # Julian Date from unix ms since epoch
   unixDateToJulian: (unix) ->
-    (unix / msPerDay) + Dates.JUnixEpoch
+    (unix / Dates.msPerDay) + Dates.JUnixEpoch
 
   # Unix ms since epoch date from julian date
   julianDateToUnix: (julian) ->
