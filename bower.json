@@ -1,0 +1,25 @@
+{
+  "name": "galactic",
+  "version": "0.0.1",
+  "homepage": "https://github.com/robharper/galactic",
+  "authors": [
+    "Rob Harper <robert.harper@gmail.com>"
+  ],
+  "description": "Celestial coordinate conversions and utilities",
+  "main": "dist/galactic.js",
+  "keywords": [
+    "coordinate",
+    "celestial",
+    "conversion",
+    "galactic",
+    "equatorial",
+    "ecliptic",
+    "horizontal"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test"
+  ]
+}

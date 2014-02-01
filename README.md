@@ -17,4 +17,3 @@
   - Extract celestial body definitions to generalize
   - Add handy additional functions, e.g. sun and moon positions given date
   - NPM prepublish compile step
-  - Browser global single file export

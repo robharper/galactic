@@ -26,15 +26,31 @@ module.exports = (grunt) ->
           src: ['**/*.coffee']
           dest: '.tmp/amd'
         }]
-      # TODO Browser global
+    
+    browserify:
+      dist:
+        files:
+          'dist/galactic.js': ['dist/cjs/galactic.js']
+        options:
+          standalone: 'galactic'
 
     # Distribution is plain old JS, compile coffeescript
     coffee: 
-      dist:
+      cjs:
+        options:
+          bare: true
         files: [{
           expand: true
           cwd: '.tmp'
-          src: '**/*.coffee'
+          src: 'cjs/**/*.coffee'
+          dest: 'dist'
+          ext: '.js'
+        }]
+      amd:
+        files: [{
+          expand: true
+          cwd: '.tmp'
+          src: 'amd/**/*.coffee'
           dest: 'dist'
           ext: '.js'
         }]
@@ -44,4 +60,5 @@ module.exports = (grunt) ->
     'clean'
     'transpile'
     'coffee'
+    'browserify'
   ]

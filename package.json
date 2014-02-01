@@ -1,8 +1,13 @@
 {
   "name": "galactic",
   "version": "0.0.1",
-  "main": "dist/cjs/main.js",
-  "dependencies": {},
+  "description": "Celestial coordinate conversions and utilities",
+  "main": "dist/cjs/galactic.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+  },
   "devDependencies": {
     "coffee-script": "~1.6.3",
     "grunt": "~0.4.0",
@@ -12,9 +17,30 @@
     "grunt-es6-module-transpiler": "~0.3.0",
     "matchdep": "~0.1.1",
     "grunt-mocha": "~0.4.5",
-    "should": "~2.1.0"
+    "should": "~2.1.0",
+    "grunt-browserify": "~1.3.0"
   },
-  "engines": {
-    "node": ">=0.8.0"
-  }
+  "scripts": {
+    "build": "grunt",
+    "test": "mocha --compilers coffee:coffee-script"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/robharper/galactic.git"
+  },
+  "keywords": [
+    "coordinate",
+    "celestial",
+    "conversion",
+    "galactic",
+    "equatorial",
+    "ecliptic",
+    "horizontal"
+  ],
+  "author": "Rob Harper <robert.harper@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robharper/galactic/issues"
+  },
+  "homepage": "https://github.com/robharper/galactic"
 }

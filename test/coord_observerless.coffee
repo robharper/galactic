@@ -1,4 +1,4 @@
-galactic = require '../dist/cjs/main'
+galactic = require '../dist/cjs/galactic'
 should = require 'should'
 
 DELTA = 0.00001
