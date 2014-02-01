@@ -5,13 +5,13 @@
 ## Usage
 
 The following examples use some basic transforms:
-```
+```javascript
 var rad = function(deg) { return deg/180 * Math.PI; };
 var deg = function(rad) { return rad*180 / Math.PI; };
 ```
 
 Where is alpha centuri in the sky above Toronto right now?
-```
+```javascript
 // Create coordinate in equatorial coordinate system
 var centuri = galactic({latitude: rad(-42.587), longitude: rad(239.488)});
 
@@ -26,7 +26,7 @@ console.log('Altitude: ' + deg(horizontal.altitude()) + ', Azimuth: ' + deg(hori
 ```
 
 Where is the sun in the skies of Toronto?
-```
+```javascript
 // Create coordinate in equatorial coordinate system
 // Calculate sun's mean longitude (approx)
 var n = galactic.dates.unixDateToJulian(Date.now()) - galactic.dates.J2000
