@@ -22,7 +22,8 @@ Coord =
 
 
   utcToLocalSidereal: (observer) ->
-    Dates.julianDateToGMST(Dates.unixDateToJulian(observer.utc)) * radsPerHour - observer.longitude
+    # Note: + longitude (vs -) means longitude specified in IAU standard (http://en.wikipedia.org/wiki/Celestial_coordinate_system#Notes_on_conversion)
+    Dates.julianDateToGMST(Dates.unixDateToJulian(observer.utc)) * radsPerHour + observer.longitude
 
   hourAngleToRightAscension: (hourAngle, localSidereal) ->
     localSidereal - hourAngle
@@ -86,7 +87,7 @@ Coord =
   #  - Observer:
   #    - latitude
   #    - longitude
-  #    - utc time of observation
+  #    - utc time of observation or local sidereal time
   #
   # Observer's longitude and utc time can be subsituted by local sidereal time. Furthermore, if the coordinate's
   # hour angle is provided instead of right ascension, only the observer's latitude is needed
@@ -103,16 +104,15 @@ Coord =
     # Observer    
     latitude = observer.latitude
     localSidereal = observer.localSidereal
-    longitude = observer.longitude
-    utc = observer.utc
 
     unless hourAngle?
       localSidereal ?= Coord.utcToLocalSidereal(observer)
       hourAngle = Coord.rightAscensionToHourAngle(rightAscension, localSidereal)
 
+    # Rotate azimuth by 180 deg (equations return result measured from due south)
     {
       altitude: asin( sin(latitude)*sin(declination) + cos(latitude)*cos(declination)*cos(hourAngle) )
-      azimuth: atan( sin(hourAngle), cos(hourAngle)*sin(latitude) - tan(declination)*cos(latitude) )
+      azimuth: Math.PI + atan( sin(hourAngle), cos(hourAngle)*sin(latitude) - tan(declination)*cos(latitude) )
     }
 
   #
@@ -132,14 +132,14 @@ Coord =
   #
   horizontalToEquatorial: (coord, observer) ->
     # Required
-    altitude = coord.altitude      
-    azimuth = coord.azimuth
+    altitude = coord.altitude  
+    # Rotate azimuth by 180 deg (equations expect it measured from due south)    
+    azimuth = coord.azimuth - Math.PI
 
     # Observer
     latitude = observer.latitude
     # Local Sidereal or longitude+utc are required
     localSidereal = observer.localSidereal
-    longitude = observer.longitude
     utc = observer.utc
 
     localSidereal ?= Coord.utcToLocalSidereal(observer)

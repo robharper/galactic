@@ -21,7 +21,7 @@ describe 'coord', ->
         # The following time/longitude yields local sidereal of 2h
         observer = 
           utc: 1385088897000
-          longitude: radians(75)
+          longitude: radians(-75)
         result = galactic.coord.equatorialToEcliptic({hourAngle: radians(-30), declination: radians(30)}, observer)
         result.longitude.should.be.approximately(radians(63.97945), DELTA)
         result.latitude.should.be.approximately(radians(9.23059), DELTA)
