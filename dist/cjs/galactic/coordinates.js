@@ -27,7 +27,7 @@ Coord = {
     obliquity: radians(23.439)
   },
   utcToLocalSidereal: function(observer) {
-    return Dates.julianDateToGMST(Dates.unixDateToJulian(observer.utc)) * radsPerHour - observer.longitude;
+    return Dates.julianDateToGMST(Dates.unixDateToJulian(observer.utc)) * radsPerHour + observer.longitude;
   },
   hourAngleToRightAscension: function(hourAngle, localSidereal) {
     return localSidereal - hourAngle;
@@ -65,14 +65,12 @@ Coord = {
     };
   },
   equatorialToHorizontal: function(coord, observer) {
-    var declination, hourAngle, latitude, localSidereal, longitude, rightAscension, utc;
+    var declination, hourAngle, latitude, localSidereal, rightAscension;
     declination = coord.declination;
     hourAngle = coord.hourAngle;
     rightAscension = coord.rightAscension;
     latitude = observer.latitude;
     localSidereal = observer.localSidereal;
-    longitude = observer.longitude;
-    utc = observer.utc;
     if (hourAngle == null) {
       if (localSidereal == null) {
         localSidereal = Coord.utcToLocalSidereal(observer);
@@ -81,16 +79,15 @@ Coord = {
     }
     return {
       altitude: asin(sin(latitude) * sin(declination) + cos(latitude) * cos(declination) * cos(hourAngle)),
-      azimuth: atan(sin(hourAngle), cos(hourAngle) * sin(latitude) - tan(declination) * cos(latitude))
+      azimuth: Math.PI + atan(sin(hourAngle), cos(hourAngle) * sin(latitude) - tan(declination) * cos(latitude))
     };
   },
   horizontalToEquatorial: function(coord, observer) {
-    var altitude, azimuth, hourAngle, latitude, localSidereal, longitude, utc;
+    var altitude, azimuth, hourAngle, latitude, localSidereal, utc;
     altitude = coord.altitude;
-    azimuth = coord.azimuth;
+    azimuth = coord.azimuth - Math.PI;
     latitude = observer.latitude;
     localSidereal = observer.localSidereal;
-    longitude = observer.longitude;
     utc = observer.utc;
     if (localSidereal == null) {
       localSidereal = Coord.utcToLocalSidereal(observer);

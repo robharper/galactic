@@ -43,16 +43,16 @@
         return this._coord.longitude;
       };
 
-      GalacticEcliptic.prototype.ecliptic = function() {
-        return new this.constructor(this._coord, this._observer);
+      GalacticEcliptic.prototype.ecliptic = function(observer) {
+        return new this.constructor(this._coord, observer != null ? observer : this._observer);
       };
 
       GalacticEcliptic.prototype.equatorial = function(observer) {
-        return new GalacticEquatorial(Coord.eclipticToEquatorial(this._coord, this._observer), this._observer);
+        return new GalacticEquatorial(Coord.eclipticToEquatorial(this._coord, observer != null ? observer : this._observer), observer != null ? observer : this._observer);
       };
 
       GalacticEcliptic.prototype.horizontal = function(observer) {
-        return this.equatorial().horizontal();
+        return this.equatorial().horizontal(observer);
       };
 
       return GalacticEcliptic;
@@ -111,16 +111,16 @@
         }
       };
 
-      GalacticEquatorial.prototype.ecliptic = function() {
-        return new GalacticEcliptic(Coord.equatorialToEcliptic(this._coord, this._observer), this._observer);
+      GalacticEquatorial.prototype.ecliptic = function(observer) {
+        return new GalacticEcliptic(Coord.equatorialToEcliptic(this._coord, observer != null ? observer : this._observer), observer != null ? observer : this._observer);
       };
 
-      GalacticEquatorial.prototype.equatorial = function() {
-        return new this.constructor(this._coord, this._observer);
+      GalacticEquatorial.prototype.equatorial = function(observer) {
+        return new this.constructor(this._coord, observer != null ? observer : this._observer);
       };
 
       GalacticEquatorial.prototype.horizontal = function(observer) {
-        return new GalacticHorizontal(Coord.equatorialToHorizontal(this._coord, this._observer), this._observer);
+        return new GalacticHorizontal(Coord.equatorialToHorizontal(this._coord, observer != null ? observer : this._observer), observer != null ? observer : this._observer);
       };
 
       return GalacticEquatorial;
@@ -153,16 +153,16 @@
         return this.equatorial().horizontal(observer);
       };
 
-      GalacticHorizontal.prototype.ecliptic = function() {
-        return this.equatorial().ecliptic();
+      GalacticHorizontal.prototype.ecliptic = function(observer) {
+        return this.equatorial(observer).ecliptic();
       };
 
-      GalacticHorizontal.prototype.equatorial = function() {
-        return new GalacticEquatorial(Coord.horizontalToEquatorial(this._coord, this._observer), this._observer);
+      GalacticHorizontal.prototype.equatorial = function(observer) {
+        return new GalacticEquatorial(Coord.horizontalToEquatorial(this._coord, observer != null ? observer : this._observer), observer != null ? observer : this._observer);
       };
 
-      GalacticHorizontal.prototype.horizontal = function() {
-        return new this.constructor(this._coord, this._observer);
+      GalacticHorizontal.prototype.horizontal = function(observer) {
+        return new this.constructor(this._coord, observer != null ? observer : this._observer);
       };
 
       return GalacticHorizontal;
