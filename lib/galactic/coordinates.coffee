@@ -109,10 +109,9 @@ Coord =
       localSidereal ?= Coord.utcToLocalSidereal(observer)
       hourAngle = Coord.rightAscensionToHourAngle(rightAscension, localSidereal)
 
-    # Rotate azimuth by 180 deg (equations return result measured from due south)
     {
       altitude: asin( sin(latitude)*sin(declination) + cos(latitude)*cos(declination)*cos(hourAngle) )
-      azimuth: Math.PI + atan( sin(hourAngle), cos(hourAngle)*sin(latitude) - tan(declination)*cos(latitude) )
+      azimuth: atan( sin(hourAngle), cos(hourAngle)*sin(latitude) - tan(declination)*cos(latitude) )
     }
 
   #
@@ -133,8 +132,7 @@ Coord =
   horizontalToEquatorial: (coord, observer) ->
     # Required
     altitude = coord.altitude  
-    # Rotate azimuth by 180 deg (equations expect it measured from due south)    
-    azimuth = coord.azimuth - Math.PI
+    azimuth = coord.azimuth
 
     # Observer
     latitude = observer.latitude

@@ -286,13 +286,13 @@ Coord = {
     }
     return {
       altitude: asin(sin(latitude) * sin(declination) + cos(latitude) * cos(declination) * cos(hourAngle)),
-      azimuth: Math.PI + atan(sin(hourAngle), cos(hourAngle) * sin(latitude) - tan(declination) * cos(latitude))
+      azimuth: atan(sin(hourAngle), cos(hourAngle) * sin(latitude) - tan(declination) * cos(latitude))
     };
   },
   horizontalToEquatorial: function(coord, observer) {
     var altitude, azimuth, hourAngle, latitude, localSidereal, utc;
     altitude = coord.altitude;
-    azimuth = coord.azimuth - Math.PI;
+    azimuth = coord.azimuth;
     latitude = observer.latitude;
     localSidereal = observer.localSidereal;
     utc = observer.utc;
