@@ -36,7 +36,7 @@ class GalacticEcliptic extends Galactic
   #
   # Return new Galactic objects in new coordinate system
   ecliptic: (observer) ->
-    new @constructor(@_coord, observer ? @_observer)
+    @observer(observer ? @_observer)
 
   equatorial: (observer) ->
     new GalacticEquatorial(Coord.eclipticToEquatorial(@_coord, observer ? @_observer), observer ? @_observer)
@@ -79,10 +79,8 @@ class GalacticEquatorial extends Galactic
   # Creates a copy of this coordinate with a different observer
   observer: (observer) ->
     if @_coord.hourAngle?
-      # Must convert hourAngle to new system (convert to observer-independent rightAscension)
-      localSidereal = @_observer.localSidereal ? Coord.utcToLocalSidereal(@_observer)
-      rightAscension = Coord.hourAngleToRightAscension(@_coord.hourAngle, localSidereal)
-      new @constructor(declination: @_coord.declination, rightAscension: rightAscension, observer)
+      # hourAngle is observer-specific, must use observer-independent rightAscension first
+      new @constructor(declination: @_coord.declination, rightAscension: @rightAscension(), observer)
     else
       # Copy
       new @constructor(@_coord, observer)
@@ -94,10 +92,15 @@ class GalacticEquatorial extends Galactic
     new GalacticEcliptic(Coord.equatorialToEcliptic(@_coord, observer ? @_observer), observer ? @_observer)
 
   equatorial: (observer) ->
-    new @constructor(@_coord, observer ? @_observer)
+    @observer(observer ? @_observer)
  
   horizontal: (observer) ->
-    new GalacticHorizontal(Coord.equatorialToHorizontal(@_coord, observer ? @_observer), observer ? @_observer)
+    if observer?
+      # Transform current view to new observer before coord transform
+      # Ensures that observer-specific information like hour angle doesn't affect transform
+      @observer(observer).horizontal()
+    else
+      new GalacticHorizontal(Coord.equatorialToHorizontal(@_coord, observer ? @_observer), observer ? @_observer)
   
 
 
@@ -132,7 +135,7 @@ class GalacticHorizontal extends Galactic
     new GalacticEquatorial(Coord.horizontalToEquatorial(@_coord, observer ? @_observer), observer ? @_observer)
 
   horizontal: (observer) ->
-    new @constructor(@_coord, observer ? @_observer)
+    @observer(observer ? @_observer)
  
 
 
