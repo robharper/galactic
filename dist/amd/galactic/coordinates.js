@@ -88,7 +88,7 @@
         return {
           declination: asin(sin(latitude) * sin(altitude) - cos(latitude) * cos(altitude) * cos(azimuth)),
           hourAngle: hourAngle,
-          rightAscension: hourAngleToRightAscension(hourAngle, localSidereal)
+          rightAscension: Coord.hourAngleToRightAscension(hourAngle, localSidereal)
         };
       }
     };

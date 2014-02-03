@@ -65,7 +65,7 @@ GalacticEcliptic = (function(_super) {
   };
 
   GalacticEcliptic.prototype.ecliptic = function(observer) {
-    return new this.constructor(this._coord, observer != null ? observer : this._observer);
+    return this.observer(observer != null ? observer : this._observer);
   };
 
   GalacticEcliptic.prototype.equatorial = function(observer) {
@@ -120,13 +120,10 @@ GalacticEquatorial = (function(_super) {
   };
 
   GalacticEquatorial.prototype.observer = function(observer) {
-    var localSidereal, rightAscension, _ref;
     if (this._coord.hourAngle != null) {
-      localSidereal = (_ref = this._observer.localSidereal) != null ? _ref : Coord.utcToLocalSidereal(this._observer);
-      rightAscension = Coord.hourAngleToRightAscension(this._coord.hourAngle, localSidereal);
       return new this.constructor({
         declination: this._coord.declination,
-        rightAscension: rightAscension
+        rightAscension: this.rightAscension()
       }, observer);
     } else {
       return new this.constructor(this._coord, observer);
@@ -138,11 +135,15 @@ GalacticEquatorial = (function(_super) {
   };
 
   GalacticEquatorial.prototype.equatorial = function(observer) {
-    return new this.constructor(this._coord, observer != null ? observer : this._observer);
+    return this.observer(observer != null ? observer : this._observer);
   };
 
   GalacticEquatorial.prototype.horizontal = function(observer) {
-    return new GalacticHorizontal(Coord.equatorialToHorizontal(this._coord, observer != null ? observer : this._observer), observer != null ? observer : this._observer);
+    if (observer != null) {
+      return this.observer(observer).horizontal();
+    } else {
+      return new GalacticHorizontal(Coord.equatorialToHorizontal(this._coord, observer != null ? observer : this._observer), observer != null ? observer : this._observer);
+    }
   };
 
   return GalacticEquatorial;
@@ -185,7 +186,7 @@ GalacticHorizontal = (function(_super) {
   };
 
   GalacticHorizontal.prototype.horizontal = function(observer) {
-    return new this.constructor(this._coord, observer != null ? observer : this._observer);
+    return this.observer(observer != null ? observer : this._observer);
   };
 
   return GalacticHorizontal;
@@ -303,7 +304,7 @@ Coord = {
     return {
       declination: asin(sin(latitude) * sin(altitude) - cos(latitude) * cos(altitude) * cos(azimuth)),
       hourAngle: hourAngle,
-      rightAscension: hourAngleToRightAscension(hourAngle, localSidereal)
+      rightAscension: Coord.hourAngleToRightAscension(hourAngle, localSidereal)
     };
   }
 };
