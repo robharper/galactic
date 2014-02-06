@@ -2,6 +2,18 @@
 
 > Celestial coordinate conversions and utilities
 
+## Installation
+
+```
+bower install galactic
+```
+
+or 
+
+```
+npm install galactic
+```
+
 ## Usage
 
 The following examples use some basic transforms:
@@ -10,7 +22,7 @@ var rad = function(deg) { return deg/180 * Math.PI; };
 var deg = function(rad) { return rad*180 / Math.PI; };
 ```
 
-Equatorial to Horizontal: Where is alpha centauri in the sky above Toronto right now?
+**Equatorial to Horizontal: Where is alpha centauri in the sky above Toronto right now?**
 ```javascript
 // Create coordinate in equatorial coordinate system
 var centauri = galactic({rightAscension: rad(219.9), declination: rad(-60.8339)});
@@ -25,7 +37,7 @@ var horizontal = centauri.horizontal( observer );
 console.log('Altitude: ' + deg(horizontal.altitude()) + ', Azimuth: ' + deg(horizontal.azimuth()));
 ```
 
-Ecliptic to Horizontal: Where is the sun in the skies of Toronto?
+**Ecliptic to Horizontal: Where is the sun right now in the skies of Toronto?**
 ```javascript
 // Create coordinate in equatorial coordinate system
 // Calculate sun's mean longitude (approx)
@@ -43,7 +55,7 @@ var horizontal = sun.horizontal( observer );
 console.log('Sun - Altitude: ' + deg(horizontal.altitude()) + ', Azimuth: ' + deg(horizontal.azimuth()));
 ```
 
-If a star is directly overhead in Toronto, where in the sky is it in Portland?
+**If a star is directly overhead in Toronto, where in the sky is it in Portland?**
 ```javascript
 // Observer 1 (Toronto)
 var observer1 = {latitude: rad(43.7001100), longitude: rad(-79.4163000), utc: Date.now()};
@@ -73,11 +85,12 @@ console.log('In Portland - Altitude: ' + deg(portlandSky.altitude()) + ', Azimut
     npm install
     grunt
 
-  AMD and CJS compatible formats will be created in `dist/`
+  AMD, CJS, and standalone formats will be created in `dist/`
 
 ## To Do
  
   - Document API
+  - Observer accessor
   - Mutator API
   - Complete unit tests
   - More Example usage
