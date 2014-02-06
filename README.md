@@ -82,10 +82,12 @@ console.log('In Portland - Altitude: ' + deg(portlandSky.altitude()) + ', Azimut
 
 ## Building
 
+Galactic uses ES6 modules and CoffeeScript. Grunt is used to transpile the code, convert to JS, and produce various forms of the library. To build:
+
     npm install
     grunt
 
-  AMD, CJS, and standalone formats will be created in `dist/`
+  AMD, CJS, and standalone (using Browserify) formats will be created in `dist/`
 
 ## To Do
  
